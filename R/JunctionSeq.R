@@ -1,4 +1,20 @@
-library(JunctionSeq)
+#' Run JunctionSeq based on a decoder file
+run.JunctionSeq <- function(decoder="decoder.txt", data.dir=".", sample.names=NULL, 
+                            file.name="QC.spliceJunctionAndExonCounts.withNovel.forJunctionSeq.txt.gz", ...) {
+    if (is.character(decoder) && !is.matrix(decoder)) {
+        decoder <- read.table(decoder, sep="\t", row.names=F, col.names=T, stringsAsFactors=F)
+    }
+    if (!(is.null(sample.names))) {
+        decoder <- decoder[match(sample.names, decoder$sample.ID),]
+    }
+    run.JunctionSeq(
+        sample.files=file.path(data.dir, decoder$qc.data.dir, file.name),
+        sample.names=decoder$unique.ID,
+        condition=decoder$group.ID,
+        ...
+    )
+}
+
 # Run each step of the analysis separately, and
 # save the results of each step.
 run.JunctionSeq <- function(sample.files, sample.names, condition, flat.gff.file, nCores,
