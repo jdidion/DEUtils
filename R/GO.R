@@ -79,6 +79,9 @@ ids.to.entrez.map <- function(db="Hs", type="ENSEMBL") {
 }
 
 ids.to.entrez <- function(ids, map, na.rm=T) {
+    if (is.null(map)) {
+        return(ids)
+    }
     m <- match(ids, map$src.id)
     if (na.rm) {
         map[m[!is.na(m)], 'entrez.id']
@@ -88,6 +91,8 @@ ids.to.entrez <- function(ids, map, na.rm=T) {
     }
 }
 
+# p - vector of p-values with names as gene names (can be in any format)
+# map - a mapping of gene names to entrez IDs
 dose.test <- function(p, map, p.value.threshold=0.05) {
     universe <- as.character(as.integer(as.character(ids.to.entrez(names(p), map))))
     ids <- universe[!is.na(p) & p <= p.value.threshold]
