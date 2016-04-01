@@ -74,7 +74,7 @@ run.sleuth <- function(samples, models=~condition, betas="conditioncontrol",
     message("Preparing data")
     data <- sleuth::sleuth_prep(samples, full.model, target_mapping=db, max_bootstrap=max.bootstrap)
     
-    for (mod in names(partial.models)) {
+    for (mod in names(models)) {
         message(paste("Fitting model", mod))
         data <- sleuth::sleuth_fit(data, formula=models[[mod]], fit_name=mod)
     }
